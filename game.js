@@ -48,14 +48,15 @@ console.log(playerScore, computerScore);
 
 function game() {
 	// loop 5 rounds
-	
 	for (let i = 0; i < 5; i++) {
 		// prompt player for choice
 		playerChoice = prompt("Rock, Paper, or Scissors?");
 		console.log(playerChoice);
-
+		
+		// play round
 		let roundResult = playRound(playerChoice, getComputerChoice());
 		
+		// detect if the round was a win, loss, or tie and update score accordingly.
 		if (roundResult.includes('win')) {
 			playerScore++;
 			console.log(`${roundResult} (You: ${playerScore}, Computer: ${computerScore})`);
@@ -69,6 +70,7 @@ function game() {
 		}
 	}
 	
+	// compare scores to determine winner.
 	if (playerScore > computerScore) {
 		return `You won by ${playerScore - computerScore} points! (${playerScore} v ${computerScore})`
 	}
