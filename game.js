@@ -20,18 +20,18 @@ function playRound(playerChoice, computerChoice) {
 	}
 	else if (playerChoice === 'rock') {
 		if (computerChoice === 'scissors') {
-			return "You win! Rock beats Scissors."
-		} else {return "You lose! Paper beats Rock."}
+			return "You win! Rock breaks Scissors."
+		} else {return "You lose! Paper covers Rock."}
 	}
 	else if (playerChoice === 'paper') {
 		if (computerChoice === 'rock') {
-			return "You win! Paper beats Rock."
-		} else {return "You lose! Scissors beats Paper."}
+			return "You win! Paper covers Rock."
+		} else {return "You lose! Scissors cut Paper."}
 	}
 	else if (playerChoice === 'scissors') {
 		if (computerChoice === 'paper') {
-			return "You win! Scissors beats Paper."
-		} else {return "You lose! Rock beats Scissors."}
+			return "You win! Scissors cut Paper."
+		} else {return "You lose! Rock breaks Scissors."}
 	}
 	else {
 		return "Invalid choices"
