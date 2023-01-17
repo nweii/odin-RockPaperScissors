@@ -12,11 +12,11 @@
 <body class="bg-black text-white text-center flex flex-col items-center gap-6">
 	<section id="r1" class="mt-12">
 		<div id="roundHeading" class="relative flex flex-col gap-2">
-			<h1 class="text-sm font-mono uppercase opacity-80 tracking-[0.4em]">
+			<h1 id="roundName" class="text-sm font-mono uppercase opacity-80 tracking-[0.4em]">
 				Round 1/5
 			</h1>
-			<p id="loader" class="font-bold text-center">
-				<span class="opacity-100">“Rock…</span>
+			<p id="steps" class="font-bold text-center">
+				<span class="opacity-50">“Rock…</span>
 				<span class="opacity-50">Paper…</span>
 				<span class="opacity-50">Scissors…</span>
 				<span class="opacity-50">Shoot!”</span>
@@ -30,20 +30,21 @@
 			</div>
 			<div id="table" class="relative -z-10">
 				<img id="glass" src="/assets/table.svg" alt="A glass table with a 3D perspective.">
-				<span id="winLose" class="absolute inset-0 translate-y-2.5 text-4xl font-black opacity-30 uppercase">Win</span>
+				<span id="winLose" class="hidden absolute inset-0 translate-y-2.5 text-4xl font-black opacity-30 uppercase">Win</span>
 			</div>
 			<div id="scoreboard" class="flex flex-row justify-between px-12">
 				<p id="myScore" class="monospace text-center opacity-80 font-semibold">0</p>
-				<p id="enemyScore" class="monospace text-center opacity-80 font-semibold">0</p>
+				<p id="theirScore" class="monospace text-center opacity-80 font-semibold">0</p>
 			</div>
 		</div>
-		<p class="hidden opacity-80 font-semibold">Tap anywhere</p>
-		<div id="choices" class="flex flex-col gap-6 items-center font-bold">
+		<p id="instruction" class="opacity-80 font-semibold">Tap anywhere</p>
+		<div id="choices" class="hidden flex flex-col gap-6 items-center font-bold">
 			<button id="Rk" class="btn">Rock</button>
 			<button id="Pr" class="btn">Paper</button>
 			<button id="Ss" class="btn">Scissors</button>
 		</div>
 	</section>
+	<p id="final" class="hidden text-8xl font-black opacity-30 uppercase mt-8"></p>
 	<script src="/game.js"></script>
 </body>
 
