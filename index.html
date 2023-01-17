@@ -9,11 +9,35 @@
 	<link href="/assets/output.css" rel="stylesheet">
 </head>
 
-<body class="bg-black text-white">
-	<p class="text-xl">Hello World!</p>
-	<img
-	 src="/assets/table.svg"
-	 alt="A glass table with a 3D perspective.">
+<body class="bg-black text-white text-center flex flex-col items-center mt-12 gap-6">
+	<div id="roundHeading" class="relative flex flex-col gap-2">
+		<h1 class="text-sm font-mono uppercase opacity-80 tracking-[0.4em]">
+			Round One
+		</h1>
+		<p id="loader" class="font-bold text-center">
+			<span class="opacity-100">“Rock…</span>
+			<span class="opacity-50">Paper…</span>
+			<span class="opacity-50">Scissors…</span>
+			<span class="opacity-50">Shoot!”</span>
+		</p>
+		<p id="outcome" class="absolute inset-x-0 bottom-0 translate-y-8 italic opacity-80">Paper beats Rock.</p>
+	</div>
+	<div id="stage" class="relative mt-12">
+		<div id="hands" class="absolute inset-0 -top-7 flex flex-row justify-between px-12 h-[64px]">
+			<img src="/assets/Player-Rock.png" alt="An emoji of a human fist.">
+			<img class="grayscale" src="/assets/Opponent-Rock.png" alt="An emoji of a human fist.">
+		</div>
+		<div id="table" class="relative -z-10">
+			<img src="/assets/table.svg" alt="A glass table with a 3D perspective.">
+			<span class="absolute inset-0 translate-y-3 text-4xl font-black opacity-30 uppercase">Win</span>
+		</div>
+	</div>
+	<p class="opacity-80 font-semibold">Tap anywhere</p>
+	<div id="choices" class="flex flex-col gap-6 items-center font-bold">
+		<button class="choice">Rock</button>
+		<button class="choice">Paper</button>
+		<button class="choice">Scissors</button>
+	</div>
 	<script src="/game.js"></script>
 </body>
 
