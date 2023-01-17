@@ -9,6 +9,10 @@ function getComputerChoice() {
 	return choices[choiceNum]
 }
 
+function setPlayerChoice(choice) {
+	playerChoice = choice;
+}
+
 function playRound(playerChoice, computerChoice) {
 	// set both inputs to lowercase
 	playerChoice = playerChoice.toLowerCase();
