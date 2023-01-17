@@ -65,9 +65,9 @@ function game() {
 			let roundResult = playRound(playerChoice, getComputerChoice());
 			
 			// get results
-			getScore(roundResult);
+			updateScore(roundResult);
 			
-			function getScore(result) {
+			function updateScore(result) {
 				// detect if the round was a win, loss, or tie and update score accordingly.
 				if (result.includes('win')) {
 					playerScore++;
