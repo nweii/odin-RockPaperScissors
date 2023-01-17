@@ -80,17 +80,20 @@ function game() {
 				else {
 					console.log(`${result} (You: ${playerScore}, Computer: ${computerScore})`);
 				}
-				
-				// compare scores to determine winner.
-				function getWinner() {
-					if (playerScore > computerScore) {
-						return `You won by ${playerScore - computerScore} points! (${playerScore} v ${computerScore})`
-					}
-					else if (playerScore < computerScore) {
-						return `You lost by ${computerScore - playerScore} points. (${playerScore} v ${computerScore})`
-					}
-					else return "Tie match!"
+			}
+			
+			// compare scores to determine winner.
+			// TODO this should update the table appearance:
+			// 	- set winLose to WIN, LOSE, or TIE
+			// 	- replace "#id" src with respective table.svg asset
+			function getWinner() {
+				if (playerScore > computerScore) {
+					return `You won by ${playerScore - computerScore} points! (${playerScore} v ${computerScore})`
 				}
+				else if (playerScore < computerScore) {
+					return `You lost by ${computerScore - playerScore} points. (${playerScore} v ${computerScore})`
+				}
+				else return "Tie match!"
 			}
 		});
 	});
