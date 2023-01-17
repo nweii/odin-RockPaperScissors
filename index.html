@@ -20,10 +20,10 @@
 			<span class="opacity-50">Scissors…</span>
 			<span class="opacity-50">Shoot!”</span>
 		</p>
-		<p id="outcome" class="absolute inset-x-0 bottom-0 translate-y-8 italic opacity-80">Paper beats Rock.</p>
+		<p id="outcome" class="hidden absolute inset-x-0 bottom-0 translate-y-8 italic opacity-80">Outcome.</p>
 	</div>
 	<div id="stage" class="relative mt-12">
-		<div id="hands" class="absolute inset-0 -top-7 flex flex-row justify-between px-12 h-[64px]">
+		<div id="hands" class="absolute inset-0 -top-8 flex flex-row justify-between px-12 h-[64px] transition">
 			<img src="/assets/Player-Rock.png" alt="An emoji of a human fist representing the player's 'rock.'">
 			<img class="grayscale" src="/assets/Opponent-Rock.png" alt="An emoji of a human fist representing the opponent's 'rock.'">
 		</div>
@@ -33,10 +33,10 @@
 		</div>
 	</div>
 	<p class="opacity-80 font-semibold">Tap anywhere</p>
-	<div id="choices" class="flex flex-col gap-6 items-center font-bold">
-		<button class="choice">Rock</button>
-		<button class="choice">Paper</button>
-		<button class="choice">Scissors</button>
+	<div id="choices" class=" flex flex-col gap-6 items-center font-bold">
+		<button class="btn">Rock</button>
+		<button class="btn">Paper</button>
+		<button class="btn">Scissors</button>
 	</div>
 	<script src="/game.js"></script>
 </body>
