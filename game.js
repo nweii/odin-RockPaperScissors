@@ -1,17 +1,21 @@
+// initialize choices and scores
+let playerChoice = "rock";
+const computerChoice = getComputerChoice();
+console.log(`Your choice: ${playerChoice}, Opponent choice: ${computerChoice}`)
+
+let playerScore = 0;
+let computerScore = 0;
+console.log(`You: ${playerScore}, Opponent: ${computerScore}`);
+
+game();
+
 function getComputerChoice() {
 	// set up choices
 	let choices = ['rock', 'paper', 'scissors'];
-	// console.log(choices);
 	
 	// pick random index between 0 and 2
 	let choiceNum = Math.floor(Math.random() * 3);
-	// console.log(choiceNum, choices[choiceNum]);
 	return choices[choiceNum]
-}
-
-function setPlayerChoice(choice) {
-	playerChoice = choice;
-	console.log(playerChoice);
 }
 
 function playRound(playerChoice, computerChoice) {
@@ -43,14 +47,6 @@ function playRound(playerChoice, computerChoice) {
 	}
 }
 
-let playerChoice = "rock";
-const computerChoice = getComputerChoice();
-console.log(playRound(playerChoice, computerChoice));
-
-let playerScore = 0;
-let computerScore = 0;
-console.log(playerScore, computerScore);
-
 function game() {
 	// loop 5 rounds
 	// prompt player for choice
@@ -61,49 +57,41 @@ function game() {
 
 	buttons.forEach(function(button) {
 		button.addEventListener("click", function() {
-			playerChoice = this.textContent; // on click, save button label as playerChoice
-			console.log(playerChoice);
-		});
-	});
-	
-	buttons.forEach(function(button) {
-		button.addEventListener("click", function() {
+			// on click, save button label as playerChoice
 			playerChoice = this.textContent;
+			console.log(`Saved ${playerChoice} as player choice.`);
+			
+			// play round
+			let roundResult = playRound(playerChoice, getComputerChoice());
+			
+			// get results
+			getScore(roundResult);
+			
+			function getScore(result) {
+				// detect if the round was a win, loss, or tie and update score accordingly.
+				if (result.includes('win')) {
+					playerScore++;
+					console.log(`${result} (You: ${playerScore}, Computer: ${computerScore})`);
+				} 
+				else if (result.includes('lose')) {
+					computerScore++;
+					console.log(`${result} (You: ${playerScore}, Computer: ${computerScore})`);
+				}
+				else {
+					console.log(`${result} (You: ${playerScore}, Computer: ${computerScore})`);
+				}
+				
+				// compare scores to determine winner.
+				function getWinner() {
+					if (playerScore > computerScore) {
+						return `You won by ${playerScore - computerScore} points! (${playerScore} v ${computerScore})`
+					}
+					else if (playerScore < computerScore) {
+						return `You lost by ${computerScore - playerScore} points. (${playerScore} v ${computerScore})`
+					}
+					else return "Tie match!"
+				}
+			}
 		});
 	});
-	
-	
-	
-
-	
-	rock.addEventListener('click', setPlayerChoice('rock'));
-	paper.addEventListener('click', setPlayerChoice('paper'));
-	scissors.addEventListener('click', setPlayerChoice('scissors'));
-	
-	// play round
-	let roundResult = playRound(playerChoice, getComputerChoice());
-	
-	// detect if the round was a win, loss, or tie and update score accordingly.
-	if (roundResult.includes('win')) {
-		playerScore++;
-		console.log(`${roundResult} (You: ${playerScore}, Computer: ${computerScore})`);
-	} 
-	else if (roundResult.includes('lose')) {
-		computerScore++;
-		console.log(`${roundResult} (You: ${playerScore}, Computer: ${computerScore})`);
-	}
-	else {
-		console.log(`${roundResult} (You: ${playerScore}, Computer: ${computerScore})`);
-	}
-	
-	// compare scores to determine winner.
-	if (playerScore > computerScore) {
-		return `You won by ${playerScore - computerScore} points! (${playerScore} v ${computerScore})`
-	}
-	else if (playerScore < computerScore) {
-		return `You lost by ${computerScore - playerScore} points. (${playerScore} v ${computerScore})`
-	}
-	else {
-		return "Tie match!"
-	}
 }

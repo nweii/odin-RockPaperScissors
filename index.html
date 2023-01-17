@@ -29,14 +29,14 @@
 		</div>
 		<div id="table" class="relative -z-10">
 			<img src="/assets/table.svg" alt="A glass table with a 3D perspective.">
-			<span class="absolute inset-0 translate-y-3 text-4xl font-black opacity-30 uppercase">Win</span>
+			<span id="winLose" class="absolute inset-0 translate-y-3 text-4xl font-black opacity-30 uppercase">Win</span>
 		</div>
 	</div>
 	<p class="opacity-80 font-semibold">Tap anywhere</p>
-	<div id="choices" class=" flex flex-col gap-6 items-center font-bold">
-		<button onclick="setPlayerChoice('rock')" class="btn">Rock</button>
-		<button onclick="setPlayerChoice('paper')" class="btn">Paper</button>
-		<button onclick="setPlayerChoice('scissors')" class="btn">Scissors</button>
+	<div id="choices" class="flex flex-col gap-6 items-center font-bold">
+		<button id="Rk" class="btn">Rock</button>
+		<button id="Pr" class="btn">Paper</button>
+		<button id="Ss" class="btn">Scissors</button>
 	</div>
 	<script src="/game.js"></script>
 </body>
