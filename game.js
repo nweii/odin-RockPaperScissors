@@ -54,8 +54,31 @@ console.log(playerScore, computerScore);
 function game() {
 	// loop 5 rounds
 	// prompt player for choice
-	playerChoice = prompt("Rock, Paper, or Scissors?");
-	console.log(playerChoice);
+	// playerChoice = prompt("Rock, Paper, or Scissors?");
+	
+	// Get all choice buttons and add click interactivity to each
+	const buttons = document.querySelectorAll("#choices button");
+
+	buttons.forEach(function(button) {
+		button.addEventListener("click", function() {
+			playerChoice = this.textContent; // on click, save button label as playerChoice
+			console.log(playerChoice);
+		});
+	});
+	
+	buttons.forEach(function(button) {
+		button.addEventListener("click", function() {
+			playerChoice = this.textContent;
+		});
+	});
+	
+	
+	
+
+	
+	rock.addEventListener('click', setPlayerChoice('rock'));
+	paper.addEventListener('click', setPlayerChoice('paper'));
+	scissors.addEventListener('click', setPlayerChoice('scissors'));
 	
 	// play round
 	let roundResult = playRound(playerChoice, getComputerChoice());
