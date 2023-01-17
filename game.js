@@ -11,6 +11,7 @@ function getComputerChoice() {
 
 function setPlayerChoice(choice) {
 	playerChoice = choice;
+	console.log(playerChoice);
 }
 
 function playRound(playerChoice, computerChoice) {
