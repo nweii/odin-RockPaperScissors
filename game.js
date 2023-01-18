@@ -10,7 +10,7 @@ let enemyScore = 0;
 console.log(`You: ${playerScore}, Opponent: ${enemyScore}`);
 
 // initialize webpage variables
-let roundName = document.querySelector("#roundName");
+let roundSign = document.querySelector("#roundSign");
 let steps = document.querySelectorAll("#steps span"); // each span element in "Rock…Paper…Scissors…Shoot!"
 let clickCount = 0;
 let whyOutcome = document.querySelector("#whyOutcome"); // explanation text for the win/loss outcome.
@@ -192,4 +192,7 @@ function endRound(outcome) {
 	newRound();
 }
 
-function updateRoundLabel() {roundName.textContent = `Round ${roundNum}/${estRounds}`};
+function updateRoundLabel() {
+	roundSign.textContent = `Round ${roundNum}/${estRounds}`;
+	console.log(`Updated ${roundSign}.`)
+};
