@@ -51,10 +51,9 @@ function newRound() {
 	updateRoundLabel();
 	
 	function suffixChildIds(parent, number) {
-		let children = parent.children;
-		for (let i = 0; i < children.length; i++) {
-			children[i].id += number;
-		}
+		parent.querySelectorAll('*').forEach(function (child) {
+			child.id += number;
+		});
 	}
 }
 
