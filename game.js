@@ -172,6 +172,7 @@ function endRound(outcome) {
 
 function newRound() {
 	roundNum++;
+	clickCount = 0;
 	// We need to numerate the previous IDs because everything in this script works only un-numerated section IDs. We also need to avoid creating duplicate IDs.
 	const prevRoundNum = roundNum - 1;
 	console.log(`New round number is ${roundNum} and previous is ${prevRoundNum}.`);
@@ -248,6 +249,6 @@ function updateHands() {
 }
 
 function updateRoundLabel() {
-	roundSign.textContent = `Round ${roundNum}/${estRounds}`;
+	roundSign.innerHTML = `<span class="font-bold">Round ${roundNum}</span>/${estRounds}`;
 	console.log(`Updated ${roundSign}.`)
 };
