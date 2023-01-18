@@ -23,6 +23,7 @@ let glass = document.querySelector("#glass"); // the image for the table
 let scoreLeft = document.querySelector("#scoreLeft"); // the text containing player score, under the table
 let scoreRight = document.querySelector("#scoreRight"); // the text containing enemy score, under the table
 
+
 let instruction = document.querySelector("#instruction");
 if ('ontouchstart' in window || navigator.maxTouchPoints) instruction.innerHTML = "Tap anywhere"
 else instruction.innerHTML = "Click anywhere";
@@ -43,18 +44,37 @@ function newRound() {
 	suffixChildIds(prevRoundSection, prevRoundNum);
 	
 	// create new section for this round
-	let nextRound = blankRound;
-	nextRound.id = "r" + roundNum;
+	let nextRoundSection = blankRound;
+	nextRoundSection.id = "r" + roundNum; // name it after the round number
 	
-	// name it after the round number
-	document.body.appendChild(nextRound);
+	document.body.appendChild(nextRoundSection);
+	refreshVars();
 	updateRoundLabel();
+	playRound();
 	
 	function suffixChildIds(parent, number) {
 		parent.querySelectorAll('*').forEach(function (child) {
 			child.id += number;
 		});
 	}
+}
+
+function refreshVars() {
+	roundSign = document.querySelector("#roundSign");
+	steps = document.querySelectorAll("#steps span"); 
+	clickCount = 0;
+	whyOutcome = document.querySelector("#whyOutcome"); 
+	playerHand = document.querySelector("#playerHand");
+	enemyHand = document.querySelector("#enemyHand");
+	winLose = document.querySelector("#winLose"); 
+	glass = document.querySelector("#glass"); 
+	scoreLeft = document.querySelector("#scoreLeft"); 
+	scoreRight = document.querySelector("#scoreRight"); 
+	instruction = document.querySelector("#instruction");
+	choices = document.querySelector("#choices");
+	
+	scoreLeft.textContent = playerScore;
+	scoreRight.textContent = enemyScore;
 }
 
 function playRound() {
@@ -188,7 +208,20 @@ function endRound(outcome) {
 		break;
 	}
 	
-	newRound();
+	if (playerScore === 5 || enemyScore === 5) {
+		final.classList.remove("hidden");
+		if (playerScore > enemyScore) {
+			final.textContent = `YOU WON!`;
+			document.body.classList.remove("bg-black");
+			document.body.classList.add("bg-[#063217]");
+		} 
+		else {
+			final.textContent = `YOU LOST!`;
+			document.body.classList.remove("bg-black");
+			document.body.classList.add("bg-[#400202]");
+		};
+	}
+	else newRound();
 }
 
 function updateRoundLabel() {
