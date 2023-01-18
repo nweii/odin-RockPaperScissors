@@ -21,20 +21,20 @@
 				<span class="opacity-50">Scissors…</span>
 				<span class="opacity-50">Shoot!”</span>
 			</p>
-			<p id="outcome" class="hidden absolute inset-x-0 bottom-0 translate-y-8 italic opacity-80">Outcome.</p>
+			<p id="whyOutcome" class="hidden absolute inset-x-0 bottom-0 translate-y-8 italic opacity-80">Outcome.</p>
 		</div>
 		<div id="stage" class="relative mt-12">
 			<div id="hands" class="absolute inset-0 -top-8 flex flex-row justify-between px-[40px] h-[64px] transition">
-				<img src="/assets/Player-Rock.png" alt="An emoji of a human fist representing the player's 'rock.'">
-				<img class="grayscale" src="/assets/Opponent-Rock.png" alt="An emoji of a human fist representing the opponent's 'rock.'">
+				<img id="playerHand" src="/assets/Player-Rock.png" alt="An emoji of a human fist representing the player's 'rock.'">
+				<img id="enemyHand" class="grayscale" src="/assets/Opponent-Rock.png" alt="An emoji of a human fist representing the opponent's 'rock.'">
 			</div>
 			<div id="table" class="relative -z-10">
 				<img id="glass" src="/assets/table.svg" alt="A glass table with a 3D perspective.">
 				<span id="winLose" class="hidden absolute inset-0 translate-y-2.5 text-4xl font-black opacity-30 uppercase">Win</span>
 			</div>
 			<div id="scoreboard" class="flex flex-row justify-between px-12">
-				<p id="myScore" class="monospace text-center opacity-80 font-semibold">0</p>
-				<p id="theirScore" class="monospace text-center opacity-80 font-semibold">0</p>
+				<p id="scoreLeft" class="monospace text-center opacity-80 font-semibold">0</p>
+				<p id="scoreRight" class="monospace text-center opacity-80 font-semibold">0</p>
 			</div>
 		</div>
 		<p id="instruction" class="opacity-80 font-semibold">Tap anywhere</p>
