@@ -1,7 +1,7 @@
 // initialize game variables
 let playerChoice = 'rock';
 const computerChoice = getComputerChoice();
-console.log(`Your choice: ${playerChoice}, Opponent choice: ${computerChoice}`)
+console.log(`Your choice: ${playerChoice}, Opponent choice: ${computerChoice}`);
 
 let roundNum = 1;
 let estRounds = 5;
@@ -30,17 +30,32 @@ else instruction.innerHTML = "Click anywhere";
 let choices = document.querySelector("#choices"); // the parent element containing the choice buttons
 let final = document.querySelector("#final"); // the final result announcement text on game end.
 
+let blankRound = document.querySelector("#r1").cloneNode(true); // set aside a blank copy of this round for use in newRound()
+
 playRound();
 
 function newRound() {
+	roundNum++;
+	// We need to numerate the previous IDs because everything in this script works only un-numerated section IDs. We also need to avoid creating duplicate IDs.
+	const prevRoundNum = roundNum - 1;
+	console.log(`New round number is ${roundNum} and previous is ${prevRoundNum}.`);
+	let prevRoundSection = document.getElementById(`r${prevRoundNum}`);
+	suffixChildIds(prevRoundSection, prevRoundNum);
+	
 	// create new section for this round
-	let roundSpace = document.createElement("section");
+	let nextRound = blankRound;
+	nextRound.id = "r" + roundNum;
 	
 	// name it after the round number
-	roundSpace.id = `r${roundNum}`;
-	document.body.appendChild(roundSpace);
-	roundNum++;
+	document.body.appendChild(nextRound);
 	updateRoundLabel();
+	
+	function suffixChildIds(parent, number) {
+		let children = parent.children;
+		for (let i = 0; i < children.length; i++) {
+			children[i].id += number;
+		}
+	}
 }
 
 function playRound() {
@@ -173,6 +188,8 @@ function endRound(outcome) {
 		updateRoundLabel();
 		break;
 	}
+	
+	newRound();
 }
 
 function updateRoundLabel() {roundName.textContent = `Round ${roundNum}/${estRounds}`};
