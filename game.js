@@ -7,14 +7,15 @@ let roundNum = 1;
 let estRounds = 5;
 let playerScore = 0;
 let enemyScore = 0;
+let clickCount = 0;
 console.log(`You: ${playerScore}, Opponent: ${enemyScore}`);
 
 // initialize webpage variables
 let roundSign = document.querySelector("#roundSign");
 
-// each span element in "Rock…Paper…Scissors…Shoot!"
-let steps = document.querySelectorAll("#steps span"); 
-let clickCount = 0;
+// container for "Rock…Paper…Scissors…Shoot!"
+let steps = document.querySelector("#stepItems");
+
 // explanation text for the win/loss outcome.
 let whyOutcome = document.querySelector("#whyOutcome"); 
 
@@ -45,45 +46,87 @@ let blankRound = document.querySelector("#r1").cloneNode(true); // set aside a b
 playRound();
 
 function playRound() {
-		let clickCount = 0;
+		console.log("Starting playRound()");
+		// each span element in "Rock…Paper…Scissors…Shoot!"
+		let stepItems = document.querySelectorAll("#stepItems span"); 
+		clickCount = 0;
+		console.log(`Reset clickcount to ${clickCount}.`);
 		
-		// Animate hands on click
-		document.addEventListener('mousedown', function() {
-			playerHand.classList.add('rotate-12', 'translate-y-2.5');
-			enemyHand.classList.add('-rotate-12', 'translate-y-2.5');
-			steps[clickCount].classList.remove("opacity-50");
-		});
-		document.addEventListener('mouseup', function() {
-			playerHand.classList.remove('rotate-12', 'translate-y-2.5');
-			enemyHand.classList.remove('-rotate-12', 'translate-y-2.5');
-		});
-		
-		// Proceed to next step on mouse-up from click
-		document.addEventListener("click", nextStep);
-		
-		function nextStep() {
-			
-			// on each click, remove the matching step index's opacity class (each word in "Rock…Paper…Scissors…") 
-			clickCount++;
-			console.log(`Click ${clickCount}`)
-			
-			
-			// once the third click is reached, stop this behavior and update the interface accordingly.
-			if (clickCount === 3) {
-				instruction.classList.add("hidden"); // hide "Tap anywhere"
-				choices.classList.remove("hidden"); // reveal choices
-				document.removeEventListener("click", nextStep); // end click anywhere behavior
+		document.addEventListener('mousedown', startNext);
+		function startNext() {
+			if (clickCount < 3) {
+				// Animate both hands to "shake" downward
+				playerHand.classList.add('rotate-12', 'translate-y-2.5');
+				enemyHand.classList.add('-rotate-12', 'translate-y-2.5');
+				
+				// Brighten "rock" then "paper" then "scissors"
+				stepItems[clickCount].classList.remove("opacity-50");
 			}
+			else {}
 		}
 		
-		// Save choice button text as player choice when clicked
-		choices.addEventListener("click", function(e) {
+		document.addEventListener('mouseup', addClick);
+		function addClick() {
+			clickCount++;
+			console.log(`${clickCount} clicks`);
+		}
+		
+		document.addEventListener('mouseup', finishNext);
+		
+		function finishNext() {
+			if (clickCount <= 3) {
+				// Reset hands back to original position
+				playerHand.classList.remove('rotate-12', 'translate-y-2.5');
+				enemyHand.classList.remove('-rotate-12', 'translate-y-2.5');
+				
+				if (clickCount === 3) {
+					// hide "Tap anywhere"
+					instruction.classList.add("hidden"); 
+					// reveal choices
+					choices.classList.remove("hidden");
+					// Save choice button text as player choice when clicked
+					choices.addEventListener("click", choose(e));
+				}
+			}
+			
+			function choose(e) {
 				playerChoice = e.target.textContent;
 				console.log(`You chose ${playerChoice}`);
 				choices.classList.add("hidden"); // hide choices again
-				steps[clickCount].classList.remove("opacity-50"); // un-fade "Shoot!" aka index 3 of #steps
+				stepItems[clickCount].classList.remove("opacity-50"); // un-fade "Shoot!" aka index 3 of #stepItems
 				getOutcome();
-		});
+			}
+		}
+		
+		// Proceed to next step on mouse-up from click
+		// document.addEventListener("click", function() {
+		// 	clickCount++;
+		// });
+		
+		function nextStep1() {
+			
+			// once the third click is reached, stop this behavior and update the interface accordingly.
+			if (clickCount < 3) {
+				// on each click, remove the matching step index's opacity class (each word in "Rock…Paper…Scissors…") 
+				clickCount++;
+				console.log(`Click ${clickCount}`)
+			} 
+			else if (clickCount === 3) {
+				instruction.classList.add("hidden"); // hide "Tap anywhere"
+				choices.classList.remove("hidden"); // reveal choices
+				document.removeEventListener("click", nextStep); // end click anywhere behavior
+
+				// Save choice button text as player choice when clicked
+				choices.addEventListener("click", function(e) {
+					playerChoice = e.target.textContent;
+					console.log(`You chose ${playerChoice}`);
+					choices.classList.add("hidden"); // hide choices again
+					stepItems[clickCount].classList.remove("opacity-50"); // un-fade "Shoot!" aka index 3 of #stepItems
+					getOutcome();
+				});
+			}
+			else clickCount = 0;
+		}
 }
 
 function getOutcome() {
@@ -138,6 +181,7 @@ function endRound(outcome) {
 	winLose.textContent = `${outcome}`;
 	whyOutcome.classList.remove("hidden");
 	winLose.classList.remove("hidden");
+	steps.classList.add("hidden");
 	
 	switch (outcome) {
 		case 'win':
@@ -197,7 +241,8 @@ function newRound() {
 
 function refreshVars() {
 	roundSign = document.querySelector("#roundSign");
-	steps = document.querySelectorAll("#steps span"); 
+	steps = document.querySelector("#stepItems");
+	stepItems = document.querySelectorAll("#stepItems span"); 
 	whyOutcome = document.querySelector("#whyOutcome"); 
 	playerHand = document.querySelector("#playerHand");
 	enemyHand = document.querySelector("#enemyHand");
