@@ -1,10 +1,14 @@
 // initialize game variables
 let playerChoice = 'rock';
-const computerChoice = getComputerChoice();
-console.log(`Your choice: ${playerChoice}, Opponent choice: ${computerChoice}`);
+let enemyChoice = 'rock';
+console.log(`Your choice: ${playerChoice}, Opponent choice: ${enemyChoice}`);
 
 let roundNum = 1;
 let estRounds = 5;
+let prevRoundNum = roundNum - 1;
+let prevRoundSection;
+let newRoundSection;
+
 let playerScore = 0;
 let enemyScore = 0;
 let clickCount = 0;
@@ -43,7 +47,7 @@ let choices = document.querySelector("#choices");
 // the final result announcement text on game end.
 let final = document.querySelector("#final"); 
 
-let blankRound = document.querySelector("#r1").cloneNode(true); // set aside a blank copy of this round for use in newRound()
+const blankRound = document.querySelector("#r1").cloneNode(true); // set aside a blank copy of this round for use in newRound()
 
 playRound();
 
@@ -52,8 +56,8 @@ function playRound() {
 	
 	// each span element in "Rock…Paper…Scissors…Shoot!"
 	let stepItems = document.querySelectorAll("#stepItems span"); 
-	clickCount = 0;
 	// reset click count as playRound() will be called at the start of each new round.
+	clickCount = 0;
 	console.log(`clickCount reset to ${clickCount}.`);
 	
 	// increment clickCount on release
@@ -120,107 +124,112 @@ function playRound() {
 		stepItems[clickCount].classList.remove("opacity-50"); // un-fade "Shoot!" aka index 3 of #stepItems
 		getOutcome();
 	}
-}
-
-function getOutcome() {
-	// set both inputs to lowercase
-	playerChoice = playerChoice.toLowerCase();
-	enemyChoice = getComputerChoice().toLowerCase();
-	console.log(`Enemy chose ${computerChoice}`);
-	updateHands();
 	
-	// Compare choices and determine a winner.
-	if (playerChoice === enemyChoice) {
-		whyOutcome.textContent = "Love is love<3";
-		endRound('tie');
-	}
-	else if (playerChoice === 'rock') {
-		if (enemyChoice === 'scissors') {
-			whyOutcome.textContent = "Rock breaks Scissors";
-			endRound('win');
-		} 
+	function getOutcome() {
+		// set both inputs to lowercase
+		playerChoice = playerChoice.toLowerCase();
+		enemyChoice = getComputerChoice().toLowerCase();
+		console.log(`Enemy chose ${enemyChoice}`);
+		updateHands();
+		
+		// Compare choices and determine a winner.
+		if (playerChoice === enemyChoice) {
+			whyOutcome.textContent = "Love is love<3";
+			endRound('tie');
+		}
+		else if (playerChoice === 'rock') {
+			if (enemyChoice === 'scissors') {
+				whyOutcome.textContent = "Rock breaks Scissors";
+				endRound('win');
+			} 
+			else {
+				whyOutcome.textContent = "Paper covers Rock";
+				endRound('loss');
+			}
+		}
+		else if (playerChoice === 'paper') {
+			if (enemyChoice === 'rock') {
+				whyOutcome.textContent = "Paper covers Rock";
+				endRound('win');
+			}
+			else {
+				whyOutcome.textContent = "Scissors cut Paper";
+				endRound('loss');
+			}
+		}
+		else if (playerChoice === 'scissors') {
+			if (enemyChoice === 'paper') {
+				whyOutcome.textContent = "Scissors cut Paper";
+				endRound('win');
+			}
+			else {
+				whyOutcome.textContent = "Rock breaks Scissors";
+				endRound('loss');
+			}
+		}
 		else {
-			whyOutcome.textContent = "Paper covers Rock";
-			endRound('loss');
+			return "Invalid choices"
+		}
+		
+		function endRound(outcome) {
+			glassImg.src = `/assets/table-${outcome}.svg`;
+			winLose.textContent = `${outcome}`;
+			whyOutcome.classList.remove("hidden");
+			winLose.classList.remove("hidden");
+			steps.classList.add("hidden");
+			
+			switch (outcome) {
+				case 'win':
+				playerScore++;
+				scoreLeft.textContent = playerScore;
+				break;
+				case 'loss':
+				enemyScore++;
+				scoreRight.textContent = enemyScore;
+				break;
+				case 'tie':
+				estRounds++;
+				updateRoundLabel();
+				break;
+			}
+			
+			if (playerScore === 5 || enemyScore === 5) {
+				final.classList.remove("hidden");
+				if (playerScore > enemyScore) {
+					final.textContent = `YOU WON!`;
+					document.body.classList.add("bg-[#063217]");
+					document.body.classList.remove("bg-black");
+				} 
+				else {
+					final.textContent = `YOU LOST!`;
+					document.body.classList.add("bg-[#400202]");
+					document.body.classList.remove("bg-black");
+				};
+			}
+			else newRound();
 		}
 	}
-	else if (playerChoice === 'paper') {
-		if (enemyChoice === 'rock') {
-			whyOutcome.textContent = "Paper covers Rock";
-			endRound('win');
-		}
-		else {
-			whyOutcome.textContent = "Scissors cut Paper";
-			endRound('loss');
-		}
-	}
-	else if (playerChoice === 'scissors') {
-		if (enemyChoice === 'paper') {
-			whyOutcome.textContent = "Scissors cut Paper";
-			endRound('win');
-		}
-		else {
-			whyOutcome.textContent = "Rock breaks Scissors";
-			endRound('loss');
-		}
-	}
-	else {
-		return "Invalid choices"
-	}
-}
-
-function endRound(outcome) {
-	glassImg.src = `/assets/table-${outcome}.svg`;
-	winLose.textContent = `${outcome}`;
-	whyOutcome.classList.remove("hidden");
-	winLose.classList.remove("hidden");
-	steps.classList.add("hidden");
-	
-	switch (outcome) {
-		case 'win':
-		playerScore++;
-		scoreLeft.textContent = playerScore;
-		break;
-		case 'loss':
-		enemyScore++;
-		scoreRight.textContent = enemyScore;
-		break;
-		case 'tie':
-		estRounds++;
-		updateRoundLabel();
-		break;
-	}
-	
-	if (playerScore === 5 || enemyScore === 5) {
-		final.classList.remove("hidden");
-		if (playerScore > enemyScore) {
-			final.textContent = `YOU WON!`;
-			document.body.classList.add("bg-[#063217]");
-			document.body.classList.remove("bg-black");
-		} 
-		else {
-			final.textContent = `YOU LOST!`;
-			document.body.classList.add("bg-[#400202]");
-			document.body.classList.remove("bg-black");
-		};
-	}
-	else newRound();
 }
 
 function newRound() {
 	roundNum++;
-	clickCount = 0;
+	console.log(`--- STARTING ROUND ${roundNum} ---`);
 	// We need to numerate the previous IDs because everything in this script works only un-numerated section IDs. We also need to avoid creating duplicate IDs.
-	const prevRoundNum = roundNum - 1;
-	console.log(`New round number is ${roundNum} and previous is ${prevRoundNum}.`);
-	let prevRoundSection = document.getElementById(`r${prevRoundNum}`);
+	prevRoundNum = roundNum - 1;
+	console.log(`prevRoundNum is ${prevRoundNum}`);
+	prevRoundSection = document.getElementById(`r${prevRoundNum}`);
+	console.log("Previous round section:"); console.log(prevRoundSection);
 	suffixChildIds(prevRoundSection, prevRoundNum);
 	
 	// create new section for this round
-	let nextRoundSection = blankRound;
-	nextRoundSection.id = "r" + roundNum; // name it after the round number
+	newRoundSection = blankRound;
+	newRoundSection.id = "r" + roundNum; // name it after the round number
+	console.log(`Created new round section #${newRoundSection.id}:`); console.log(newRoundSection);
 	
-	document.body.appendChild(nextRoundSection);
+	// reveal the next round
+	document.body.insertBefore(newRoundSection, final);
+	console.log("Added new round section to document.");
+	
 	refreshVars();
 	updateRoundLabel();
 	playRound();
@@ -248,7 +257,7 @@ function refreshVars() {
 	
 	scoreLeft.textContent = playerScore;
 	scoreRight.textContent = enemyScore;
-	console.log(`Player: ${playerScore}, Enemy: ${enemyScore}, clickCount: ${clickCount}`)
+	console.log(`Player: ${playerScore}, Enemy: ${enemyScore}`)
 }
 
 function getComputerChoice() {
@@ -288,5 +297,5 @@ function updateHands() {
 
 function updateRoundLabel() {
 	roundSign.innerHTML = `<span class="font-bold">Round ${roundNum}</span>/${estRounds}`;
-	console.log(`Updated ${roundSign}.`)
+	console.log(`Updated round sign.`)
 };
