@@ -33,6 +33,8 @@ let scoreRight = document.querySelector("#scoreRight");
 
 
 let instruction = document.querySelector("#instruction");
+
+// Detect whether input is touchscreen or mouse and update instruction text accordingly
 if ('ontouchstart' in window || navigator.maxTouchPoints) instruction.innerHTML = "Tap anywhere"
 else instruction.innerHTML = "Click anywhere";
 
@@ -47,10 +49,12 @@ playRound();
 
 function playRound() {
 	console.log("Starting playRound()");
+	
 	// each span element in "Rock…Paper…Scissors…Shoot!"
 	let stepItems = document.querySelectorAll("#stepItems span"); 
 	clickCount = 0;
-	console.log(`Reset clickcount to ${clickCount}.`);
+	// reset click count as playRound() will be called at the start of each new round.
+	console.log(`clickCount reset to ${clickCount}.`);
 	
 	// increment clickCount on release
 	document.addEventListener('mouseup', addClick);
@@ -99,7 +103,7 @@ function playRound() {
 		console.log("chanting deactivated.");
 		document.removeEventListener('mouseup', addClick);
 		console.log("Click counts deactivated.");
-		// hide "Tap anywhere"
+		// hide "Tap/click anywhere"
 		instruction.classList.add("hidden"); 
 		
 		// reveal choices
@@ -115,36 +119,6 @@ function playRound() {
 		choices.classList.add("hidden"); // hide choices again
 		stepItems[clickCount].classList.remove("opacity-50"); // un-fade "Shoot!" aka index 3 of #stepItems
 		getOutcome();
-	}
-	
-	function nextStep1() {
-		
-		// once the third click is reached, stop this behavior and update the interface accordingly.
-		if (clickCount < 3) {
-			// on each click, remove the matching step index's opacity class (each word in "Rock…Paper…Scissors…") 
-			clickCount++;
-			console.log(`Click ${clickCount}`)
-		} 
-		else if (clickCount === 3) {
-			// hide "Tap anywhere"
-			instruction.classList.add("hidden");
-			// reveal choices
-			choices.classList.remove("hidden");
-			// end click anywhere behavior
-			document.removeEventListener("click", nextStep); 
-	
-			// Save choice button text as player choice when clicked
-			choices.addEventListener("click", function(e) {
-				playerChoice = e.target.textContent;
-				console.log(`You chose ${playerChoice}`);
-				// hide choices again
-				choices.classList.add("hidden"); 
-				// un-fade "Shoot!" aka index 3 of #stepItems
-				stepItems[clickCount].classList.remove("opacity-50"); 
-				getOutcome();
-			});
-		}
-		else clickCount = 0;
 	}
 }
 
