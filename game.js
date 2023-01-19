@@ -195,13 +195,13 @@ function endRound(outcome) {
 		final.classList.remove("hidden");
 		if (playerScore > enemyScore) {
 			final.textContent = `YOU WON!`;
-			document.body.classList.remove("bg-black");
 			document.body.classList.add("bg-[#063217]");
+			document.body.classList.remove("bg-black");
 		} 
 		else {
 			final.textContent = `YOU LOST!`;
-			document.body.classList.remove("bg-black");
 			document.body.classList.add("bg-[#400202]");
+			document.body.classList.remove("bg-black");
 		};
 	}
 	else newRound();
