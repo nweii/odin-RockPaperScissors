@@ -46,87 +46,106 @@ let blankRound = document.querySelector("#r1").cloneNode(true); // set aside a b
 playRound();
 
 function playRound() {
-		console.log("Starting playRound()");
-		// each span element in "Rock…Paper…Scissors…Shoot!"
-		let stepItems = document.querySelectorAll("#stepItems span"); 
-		clickCount = 0;
-		console.log(`Reset clickcount to ${clickCount}.`);
+	console.log("Starting playRound()");
+	// each span element in "Rock…Paper…Scissors…Shoot!"
+	let stepItems = document.querySelectorAll("#stepItems span"); 
+	clickCount = 0;
+	console.log(`Reset clickcount to ${clickCount}.`);
+	
+	// increment clickCount on release
+	document.addEventListener('mouseup', addClick);
+	function addClick() {
+		clickCount++;
+		console.log(`${clickCount} clicks`);
+	}
+	
+	// on each click down, Animate hands down and light a chant. If 
+	document.addEventListener('mousedown', animDown);
+	console.log("handsdown and chanting activated.")
+	
+	document.addEventListener('mouseup', animUp);
+	console.log("handsup activated.");
+	
+	function animDown() {
+		// Animate both hands downward
+		playerHand.classList.add('rotate-12', 'translate-y-2.5');
+		enemyHand.classList.add('-rotate-12', 'translate-y-2.5');
 		
-		document.addEventListener('mousedown', startNext);
-		function startNext() {
-			if (clickCount < 3) {
-				// Animate both hands to "shake" downward
-				playerHand.classList.add('rotate-12', 'translate-y-2.5');
-				enemyHand.classList.add('-rotate-12', 'translate-y-2.5');
-				
-				// Brighten "rock" then "paper" then "scissors"
-				stepItems[clickCount].classList.remove("opacity-50");
-			}
-			else {}
+		lightStep();
+	}
+	
+	function lightStep() {
+		// Brighten "rock" then "paper" then "scissors"
+		stepItems[clickCount].classList.remove("opacity-50");
+	}
+	
+	function animUp() {
+		// Reset hands back upward
+		playerHand.classList.remove('rotate-12', 'translate-y-2.5');
+		enemyHand.classList.remove('-rotate-12', 'translate-y-2.5');
+		
+		// after last animUp / after "Scissors…" lights up
+		if (clickCount === 3) {
+			showChoices();
 		}
+	}
+	
+	function showChoices() {
+		choices.addEventListener("click", choose);
+		console.log("Added choice click event listener.");
 		
-		document.addEventListener('mouseup', addClick);
-		function addClick() {
+		// remove step/animation click anywhere behaviors
+		document.removeEventListener('mousedown', animDown);
+		console.log("chanting deactivated.");
+		document.removeEventListener('mouseup', addClick);
+		console.log("Click counts deactivated.");
+		// hide "Tap anywhere"
+		instruction.classList.add("hidden"); 
+		
+		// reveal choices
+		choices.classList.remove("hidden");
+		console.log("showing choices");
+		// Save choice button text as player choice when clicked
+		document.removeEventListener('mousedown', animUp);
+	}
+
+	function choose(e) {
+		playerChoice = e.target.textContent;
+		console.log(`You chose ${playerChoice}`);
+		choices.classList.add("hidden"); // hide choices again
+		stepItems[clickCount].classList.remove("opacity-50"); // un-fade "Shoot!" aka index 3 of #stepItems
+		getOutcome();
+	}
+	
+	function nextStep1() {
+		
+		// once the third click is reached, stop this behavior and update the interface accordingly.
+		if (clickCount < 3) {
+			// on each click, remove the matching step index's opacity class (each word in "Rock…Paper…Scissors…") 
 			clickCount++;
-			console.log(`${clickCount} clicks`);
-		}
-		
-		document.addEventListener('mouseup', finishNext);
-		
-		function finishNext() {
-			if (clickCount <= 3) {
-				// Reset hands back to original position
-				playerHand.classList.remove('rotate-12', 'translate-y-2.5');
-				enemyHand.classList.remove('-rotate-12', 'translate-y-2.5');
-				
-				if (clickCount === 3) {
-					// hide "Tap anywhere"
-					instruction.classList.add("hidden"); 
-					// reveal choices
-					choices.classList.remove("hidden");
-					// Save choice button text as player choice when clicked
-					choices.addEventListener("click", choose(e));
-				}
-			}
-			
-			function choose(e) {
+			console.log(`Click ${clickCount}`)
+		} 
+		else if (clickCount === 3) {
+			// hide "Tap anywhere"
+			instruction.classList.add("hidden");
+			// reveal choices
+			choices.classList.remove("hidden");
+			// end click anywhere behavior
+			document.removeEventListener("click", nextStep); 
+	
+			// Save choice button text as player choice when clicked
+			choices.addEventListener("click", function(e) {
 				playerChoice = e.target.textContent;
 				console.log(`You chose ${playerChoice}`);
-				choices.classList.add("hidden"); // hide choices again
-				stepItems[clickCount].classList.remove("opacity-50"); // un-fade "Shoot!" aka index 3 of #stepItems
+				// hide choices again
+				choices.classList.add("hidden"); 
+				// un-fade "Shoot!" aka index 3 of #stepItems
+				stepItems[clickCount].classList.remove("opacity-50"); 
 				getOutcome();
-			}
+			});
 		}
-		
-		// Proceed to next step on mouse-up from click
-		// document.addEventListener("click", function() {
-		// 	clickCount++;
-		// });
-		
-		function nextStep1() {
-			
-			// once the third click is reached, stop this behavior and update the interface accordingly.
-			if (clickCount < 3) {
-				// on each click, remove the matching step index's opacity class (each word in "Rock…Paper…Scissors…") 
-				clickCount++;
-				console.log(`Click ${clickCount}`)
-			} 
-			else if (clickCount === 3) {
-				instruction.classList.add("hidden"); // hide "Tap anywhere"
-				choices.classList.remove("hidden"); // reveal choices
-				document.removeEventListener("click", nextStep); // end click anywhere behavior
-
-				// Save choice button text as player choice when clicked
-				choices.addEventListener("click", function(e) {
-					playerChoice = e.target.textContent;
-					console.log(`You chose ${playerChoice}`);
-					choices.classList.add("hidden"); // hide choices again
-					stepItems[clickCount].classList.remove("opacity-50"); // un-fade "Shoot!" aka index 3 of #stepItems
-					getOutcome();
-				});
-			}
-			else clickCount = 0;
-		}
+		else clickCount = 0;
+	}
 }
 
 function getOutcome() {
