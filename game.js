@@ -33,8 +33,13 @@ let scoreRight = document.querySelector("#scoreRight");
 
 let instruction = document.querySelector("#instruction");
 
+function isTouch() {
+	if ('ontouchstart' in window || navigator.maxTouchPoints) return true;
+	else return false;
+}
+
 // Detect whether input is touchscreen or mouse and update instruction text accordingly
-if ('ontouchstart' in window || navigator.maxTouchPoints) instruction.innerHTML = "Tap anywhere"
+if (isTouch()) instruction.innerHTML = "Tap anywhere"
 else instruction.innerHTML = "Click anywhere";
 
 // the parent element containing the choice buttons
@@ -130,17 +135,16 @@ function playRound() {
 	console.log(`Clicks set to ${clickCount}.`);
 	
 	// Clicks increment on release
-	document.addEventListener('mouseup', addClick);
+	document.addEventListener(isTouch() ? 'touchend' : 'mouseup', addClick);
 	
 	function addClick() {
 		clickCount++;
 		console.log(`${clickCount} clicks`);
 	}
-	
 	// Hands go down and RPS blinks on click down
-	document.addEventListener('mousedown', down);
+	document.addEventListener(isTouch() ? 'touchstart' : 'mousedown', down);
 	// Hands reset on click release
-	document.addEventListener('mouseup', up);
+	document.addEventListener(isTouch() ? 'touchend' : 'mouseup', up);
 	
 	function down() {
 		// Animate both hands downward
@@ -167,9 +171,9 @@ function playRound() {
 		console.log("Buttons activated.");
 
 		// REMOVE chant behaviors
-		document.removeEventListener('mousedown', down);
-		document.removeEventListener('mouseup', addClick);
-		document.removeEventListener('mouseup', up);
+		document.removeEventListener(isTouch() ? 'touchstart' : 'mousedown', down);
+		document.removeEventListener(isTouch() ? 'touchend' : 'mouseup', addClick);
+		document.removeEventListener(isTouch() ? 'touchend' : 'mouseup', up);
 		console.log("No more chanting.");
 		// HIDE "Tap/click anywhere"
 		instruction.classList.add("hidden");
