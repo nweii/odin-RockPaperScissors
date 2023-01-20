@@ -111,7 +111,6 @@ function newRound(n) {
 	scoreRight = document.querySelector(`#scoreRight-${n}`);
 	instruction = document.querySelector(`#instruction-${n}`);
 	choices = document.querySelector(`#choices-${n}`);
-	next = document.querySelector(`#nextRound-${n}`);
 	// LOAD scoreboard
 	scoreLeft.textContent = playerScore;
 	scoreRight.textContent = enemyScore;
