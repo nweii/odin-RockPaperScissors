@@ -6,12 +6,45 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<meta name="description" content="A console-based rock paper scissors game.">
+	<link href="/assets/output.css" rel="stylesheet">
 </head>
 
-<body>
-	
+<body class="bg-black text-white text-center flex flex-col items-center gap-6 pb-12 select-none">
+	<section id="blankRound" class="hidden mt-12 mb-48">
+		<div id="roundHeading" class="flex flex-col gap-2">
+			<h1 id="roundSign" class="text-sm font-mono uppercase tracking-[0.4em] font-bold text-amber-300">Round 0</h1>
+			<p id="stepItems" class="font-bold text-center">
+				<span class="opacity-50">“Rock…</span>
+				<span class="opacity-50">Paper…</span>
+				<span class="opacity-50">Scissors…</span>
+				<span class="opacity-50">Shoot!”</span>
+			</p>
+		</div>
+		<div id="stage" class="relative mt-12">
+			<div id="hands" class="absolute inset-0 -top-8 flex flex-row justify-between px-[40px] h-[64px] transition">
+				<img id="playerHand" src="/assets/Player-Rock.png" alt="An emoji of a human fist representing the player's 'rock.'">
+				<img id="enemyHand" class="grayscale" src="/assets/Opponent-Rock.png" alt="An emoji of a human fist representing the opponent's 'rock.'">
+			</div>
+			<div id="table" class="relative -z-10">
+				<img id="glassImg" src="/assets/table.svg" alt="A glassImg table with a 3D perspective.">
+				<span id="winLose" class="hidden absolute inset-0 translate-y-2.5 text-4xl font-black opacity-30 uppercase">Win</span>
+			</div>
+			<div id="scoreboard" class="flex flex-row justify-between px-12 pt-1">
+				<p id="scoreLeft" class="monospace text-center opacity-80 font-semibold">0</p>
+				<p id="whyOutcome" class="hidden italic opacity-80">Outcome.</p>
+				<p id="scoreRight" class="monospace text-center opacity-80 font-semibold">0</p>
+			</div>
+		</div>
+		<p id="instruction" class="opacity-80 font-medium">Tap anywhere</p>
+		<div id="choices" class="hidden flex flex-col gap-6 items-center font-bold">
+			<button id="Rk" class="btn">Rock</button>
+			<button id="Pr" class="btn">Paper</button>
+			<button id="Ss" class="btn">Scissors</button>
+		</div>
+		<button id="nextRound" class="btn hidden">Next Round</button>
+	</section>
+	<p id="final" class="hidden text-8xl font-black opacity-30 uppercase mt-8 px-12 mx-auto"></p>
 	<script src="/game.js"></script>
-	
 </body>
 
 </html>

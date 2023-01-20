@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.btn {
+		@apply bg-yellow-400 bg-gradient-to-b from-yellow-300 to-amber-700 text-black py-1 px-4 rounded-full flex-grow-0 w-min
+	}
+}
