@@ -9,19 +9,16 @@
 	<link href="/assets/output.css" rel="stylesheet">
 </head>
 
-<body class="bg-black text-white text-center flex flex-col items-center gap-6">
-	<section id="r1" class="mt-12">
+<body class="bg-black text-white text-center flex flex-col items-center gap-6 pb-12 select-none">
+	<section id="blankRound" class="hidden mt-12 mb-48">
 		<div id="roundHeading" class="flex flex-col gap-2">
-			<h1 id="roundSign" class="text-sm font-mono uppercase opacity-80 tracking-[0.4em]">
-				<span class="font-bold">Round 1</span>/5
-			</h1>
+			<h1 id="roundSign" class="text-sm font-mono uppercase tracking-[0.4em] font-bold text-amber-300">Round 0</h1>
 			<p id="stepItems" class="font-bold text-center">
 				<span class="opacity-50">“Rock…</span>
 				<span class="opacity-50">Paper…</span>
 				<span class="opacity-50">Scissors…</span>
 				<span class="opacity-50">Shoot!”</span>
 			</p>
-			<p id="whyOutcome" class="hidden italic opacity-80">Outcome.</p>
 		</div>
 		<div id="stage" class="relative mt-12">
 			<div id="hands" class="absolute inset-0 -top-8 flex flex-row justify-between px-[40px] h-[64px] transition">
@@ -32,8 +29,9 @@
 				<img id="glassImg" src="/assets/table.svg" alt="A glassImg table with a 3D perspective.">
 				<span id="winLose" class="hidden absolute inset-0 translate-y-2.5 text-4xl font-black opacity-30 uppercase">Win</span>
 			</div>
-			<div id="scoreboard" class="flex flex-row justify-between px-12">
+			<div id="scoreboard" class="flex flex-row justify-between px-12 pt-1">
 				<p id="scoreLeft" class="monospace text-center opacity-80 font-semibold">0</p>
+				<p id="whyOutcome" class="hidden italic opacity-80">Outcome.</p>
 				<p id="scoreRight" class="monospace text-center opacity-80 font-semibold">0</p>
 			</div>
 		</div>
@@ -43,8 +41,9 @@
 			<button id="Pr" class="btn">Paper</button>
 			<button id="Ss" class="btn">Scissors</button>
 		</div>
+		<button id="nextRound" class="btn hidden">Next Round</button>
 	</section>
-	<p id="final" class="hidden text-8xl font-black opacity-30 uppercase mt-8"></p>
+	<p id="final" class="hidden text-8xl font-black opacity-30 uppercase mt-8 px-12 mx-auto"></p>
 	<script src="/game.js"></script>
 </body>
 
