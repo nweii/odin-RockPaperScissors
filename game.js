@@ -1,0 +1,322 @@
+// initialize game variables
+let playerChoice = 'rock';
+let enemyChoice = 'rock';
+console.log(`Your choice: ${playerChoice}, Opponent choice: ${enemyChoice}`);
+
+let roundNum = 0;
+
+let playerScore = 0;
+let enemyScore = 0;
+let clickCount = 0;
+console.log(`You: ${playerScore}, Opponent: ${enemyScore}`);
+
+// initialize webpage variables
+let roundSign = document.querySelector("#roundSign");
+
+// container for "Rock…Paper…Scissors…Shoot!"
+let steps = document.querySelector("#stepItems");
+
+// explanation text for the win/loss outcome.
+let whyOutcome = document.querySelector("#whyOutcome");
+
+let playerHand = document.querySelector("#playerHand");
+let enemyHand = document.querySelector("#enemyHand");
+// the text on the table announcing WIN LOSE or TIE
+let winLose = document.querySelector("#winLose");
+// the image for the table
+let glassImg = document.querySelector("#glassImg");
+
+// the text containing player score, under the table
+let scoreLeft = document.querySelector("#scoreLeft");
+// the text containing enemy score, under the table
+let scoreRight = document.querySelector("#scoreRight");
+
+let instruction = document.querySelector("#instruction");
+
+// Detect whether input is touchscreen or mouse and update instruction text accordingly
+if ('ontouchstart' in window || navigator.maxTouchPoints) instruction.innerHTML = "Tap anywhere"
+else instruction.innerHTML = "Click anywhere";
+
+// the parent element containing the choice buttons
+let choices = document.querySelector("#choices");
+// the button for proceeding to the next round
+let next = document.querySelector("#nextRound");
+
+// the final result announcement text on game end.
+let final = document.querySelector("#final");
+
+const blankRound = document.querySelector("#blankRound"); // set aside a blank copy of this round for use in newRound()
+
+nextRound(++roundNum);
+
+function nextRound(n) {
+	newRound(n);
+	playRound();
+}
+
+// for (playerScore, enemyScore; playerScore < 5 || enemyScore < 5;) {
+// 	for (let roundNum = 1; roundNum++;) {
+// 		newRound(roundNum);
+// 		console.log("--- ...newRound() complete. ---");
+// 		playRound();
+// 		console.log("--- ...playRound() complete. ---");
+// 	}
+// }
+// 
+// endGame();
+// console.log("--- Game ended. ---");
+
+
+function newRound(n) {
+	console.log(`--- Making newRound(${n})... ---`)
+
+	let roundSection = makeRound(n);
+
+	function makeRound(n) {
+		console.log("Building round...");
+		// copy new round section from template
+		let roundNode = document.getElementById("blankRound").cloneNode(true);
+		// name it after the round number
+		roundNode.id = `round-${n}`;
+
+		console.log(`...Built new round section #${roundNode.id}:`);
+		console.log(roundNode);
+		return roundNode;
+	}
+	// INSERT hidden new round
+	document.body.insertBefore(roundSection, final);
+	// RENAME
+	suffixChildIds(roundSection, n);
+
+	function suffixChildIds(parent, n) {
+		parent.querySelectorAll('*').forEach(function(child) {
+			child.id += `-${n}`;
+		});
+	}
+	// SHOW new round
+	roundSection.classList.remove("hidden");
+	console.log("Added new round section to document.");
+	window.scrollTo(0, document.body.scrollHeight);	
+	
+	// RIG variables to new round IDs
+	roundSign = document.querySelector(`#roundSign-${n}`);
+	steps = document.querySelector(`#stepItems-${n}`);
+	stepItems = document.querySelectorAll(`#stepItems-${n} span`);
+	whyOutcome = document.querySelector(`#whyOutcome-${n}`);
+	playerHand = document.querySelector(`#playerHand-${n}`);
+	enemyHand = document.querySelector(`#enemyHand-${n}`);
+	winLose = document.querySelector(`#winLose-${n}`);
+	glassImg = document.querySelector(`#glassImg-${n}`);
+	scoreLeft = document.querySelector(`#scoreLeft-${n}`);
+	scoreRight = document.querySelector(`#scoreRight-${n}`);
+	instruction = document.querySelector(`#instruction-${n}`);
+	choices = document.querySelector(`#choices-${n}`);
+	next = document.querySelector(`#nextRound-${n}`);
+	// LOAD scoreboard
+	scoreLeft.textContent = playerScore;
+	scoreRight.textContent = enemyScore;
+	console.log("Rigged new variables & Loaded scoreboard.")
+
+	// LOAD Round # banner
+	roundSign.textContent = `Round ${n}`;
+	console.log(`Updated round sign.`);
+}
+
+function playRound() {
+	console.log("--- Starting playRound()... ---");
+	
+	// Get elements in "Rock…Paper…Scissors…Shoot!"
+	let stepItems = document.querySelectorAll(`#stepItems-${roundNum} span`);
+	clickCount = 0;
+	console.log(`Clicks set to ${clickCount}.`);
+	
+	// Clicks increment on release
+	document.addEventListener('mouseup', addClick);
+	
+	function addClick() {
+		clickCount++;
+		console.log(`${clickCount} clicks`);
+	}
+	
+	// Hands go down and RPS blinks on click down
+	document.addEventListener('mousedown', down);
+	// Hands reset on click release
+	document.addEventListener('mouseup', up);
+	
+	function down() {
+		// Animate both hands downward
+		playerHand.classList.add('rotate-12', 'translate-y-2.5');
+		enemyHand.classList.add('-rotate-12', 'translate-y-2.5');
+	
+		// Brighten "rock" then "paper" then "scissors"
+		stepItems[clickCount].classList.remove("opacity-50");
+	}
+	
+	function up() {
+		// Reset hands back upward
+		playerHand.classList.remove('rotate-12', 'translate-y-2.5');
+		enemyHand.classList.remove('-rotate-12', 'translate-y-2.5');
+		
+		if (clickCount >= 3) {
+			showChoices();
+		}
+	}
+
+	function showChoices() {
+		// ENABLE button clicks
+		choices.addEventListener("click", choose);
+		console.log("Buttons activated.");
+
+		// REMOVE chant behaviors
+		document.removeEventListener('mousedown', down);
+		document.removeEventListener('mouseup', addClick);
+		document.removeEventListener('mouseup', up);
+		console.log("No more chanting.");
+		// HIDE "Tap/click anywhere"
+		instruction.classList.add("hidden");
+
+		// REVEAL choices
+		choices.classList.remove("hidden");
+		console.log("Choices revealed.");
+	}
+
+	function choose(e) {
+		// SAVE choice button text as player choice when clicked
+		playerChoice = e.target.textContent;
+		console.log(`You chose ${playerChoice}`);
+		// HIDE choices
+		choices.classList.add("hidden");
+		// Brighten "Shoot!" aka index 3 of #stepItems
+		stepItems[clickCount].classList.remove("opacity-50");
+		// DISABLE button clicks
+		choices.removeEventListener("click", choose);
+		console.log("Buttons deactivated.");
+		getOutcome();
+	}
+
+	function getOutcome() {
+		playerChoice = playerChoice.toLowerCase();
+		enemyChoice = getComputerChoice().toLowerCase();
+		console.log(`Enemy chose ${enemyChoice}`);
+		
+		updateHands();
+		function updateHands() {
+			switch (playerChoice) {
+				case 'rock':
+				playerHand.src = "/assets/Player-Rock.png";
+				break;
+				case 'paper':
+				playerHand.src = "/assets/Player-Paper.png";
+				break;
+				case 'scissors':
+				playerHand.src = "/assets/Player-Scissors.png";
+				break;
+			}
+			
+			switch (enemyChoice) {
+				case 'rock':
+				enemyHand.src = "/assets/Opponent-Rock.png";
+				break;
+				case 'paper':
+				enemyHand.src = "/assets/Opponent-Paper.png";
+				break;
+				case 'scissors':
+				enemyHand.src = "/assets/Opponent-Scissors.png";
+				break;
+			}
+		}
+		
+		// Compare choices and determine a winner.
+		if (playerChoice === enemyChoice) {
+			whyOutcome.textContent = "Love is love<3";
+			endRound('tie');
+		} else if (playerChoice === 'rock') {
+			if (enemyChoice === 'scissors') {
+				whyOutcome.innerHTML = '<span class="font-semibold">Rock</span> breaks <span class="font-semibold">Scissors</span>';
+				endRound('win');
+			} else {
+				whyOutcome.innerHTML = '<span class="font-semibold">Rock</span> covered by <span class="font-semibold">Paper</span>';
+				endRound('loss');
+			}
+		} else if (playerChoice === 'paper') {
+			if (enemyChoice === 'rock') {
+				whyOutcome.innerHTML = '<span class="font-semibold">Paper</span> covers <span class="font-semibold">Rock</span>';
+				endRound('win');
+			} else {
+				whyOutcome.innerHTML = '<span class="font-semibold">Paper</span> cut by <span class="font-semibold">Scissors</span>';
+				endRound('loss');
+			}
+		} else if (playerChoice === 'scissors') {
+			if (enemyChoice === 'paper') {
+				whyOutcome.innerHTML = '<span class="font-semibold">Scissors</span> cut <span class="font-semibold">Paper</span>';
+				endRound('win');
+			} else {
+				whyOutcome.innerHTML = '<span class="font-semibold">Scissors</span> broken by <span class="font-semibold">Rock</span>';
+				endRound('loss');
+			}
+		} else {
+			return "Invalid choices"
+		}
+		
+		function getComputerChoice() {
+			// set up choices
+			let choices = ['rock', 'paper', 'scissors'];
+			
+			// pick random index between 0 and 2
+			let choiceNum = Math.floor(Math.random() * 3);
+			return choices[choiceNum]
+		}
+	}
+
+	function endRound(outcome) {
+		// UPDATE table
+		glassImg.src = `/assets/table-${outcome}.svg`;
+		winLose.textContent = `${outcome}`;
+		// DIM round sign
+		roundSign.classList.add("opacity-40");
+		roundSign.classList.remove("font-bold");
+		roundSign.classList.remove("text-amber-300");
+		// REVEAL result text
+		whyOutcome.classList.remove("hidden");
+		winLose.classList.remove("hidden");
+		// HIDE chant text
+		steps.classList.add("hidden");
+		// SHORTEN bottom margin
+		if (roundNum) {document.getElementById(`round-${roundNum}`).classList.add("mb-1");
+		document.getElementById(`round-${roundNum}`).classList.remove("mb-48");}
+		
+		// UPDATE scores
+		// SHOW scores
+		switch (outcome) {
+			case 'win':
+				playerScore++;
+				scoreLeft.textContent = playerScore;
+				break;
+			case 'loss':
+				enemyScore++;
+				scoreRight.textContent = enemyScore;
+				break;
+			case 'tie':
+				break;
+		}
+		
+		if (playerScore === 5 || enemyScore === 5) {
+			endGame();
+		}
+		else nextRound(++roundNum);
+	}
+}
+
+function endGame() {
+	final.classList.remove("hidden");
+	if (playerScore > enemyScore) {
+		final.textContent = `YOU WON!`;
+		document.body.classList.add("bg-[#063217]");
+		document.body.classList.remove("bg-black");
+	} 
+	else if (playerScore < enemyScore) {
+		final.textContent = `YOU LOST!`;
+		document.body.classList.add("bg-[#400202]");
+		document.body.classList.remove("bg-black");
+	} else console.log("Somehow tie game");
+}
