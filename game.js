@@ -44,8 +44,10 @@ else instruction.innerHTML = "Click anywhere";
 
 // the parent element containing the choice buttons
 let choices = document.querySelector("#choices");
+// each button within choices
+let eachChoice = document.querySelectorAll('#choices button');
 // the button for proceeding to the next round
-let next = document.querySelector("#nextRound");
+let nextBtn = document.querySelector("#nextBtn");
 
 // the final result announcement text on game end.
 let final = document.querySelector("#final");
@@ -55,22 +57,13 @@ const blankRound = document.querySelector("#blankRound"); // set aside a blank c
 nextRound(++roundNum);
 
 function nextRound(n) {
+	if (n > 1) {
+		nextBtn.removeEventListener("click", clickNext);
+		nextBtn.classList.add('hidden');
+	}
 	newRound(n);
 	playRound();
 }
-
-// for (playerScore, enemyScore; playerScore < 5 || enemyScore < 5;) {
-// 	for (let roundNum = 1; roundNum++;) {
-// 		newRound(roundNum);
-// 		console.log("--- ...newRound() complete. ---");
-// 		playRound();
-// 		console.log("--- ...playRound() complete. ---");
-// 	}
-// }
-// 
-// endGame();
-// console.log("--- Game ended. ---");
-
 
 function newRound(n) {
 	console.log(`--- Making newRound(${n})... ---`)
@@ -89,7 +82,7 @@ function newRound(n) {
 		return roundNode;
 	}
 	// INSERT hidden new round
-	document.body.insertBefore(roundSection, final);
+	document.body.insertBefore(roundSection, choices);
 	// RENAME
 	suffixChildIds(roundSection, n);
 
@@ -115,7 +108,6 @@ function newRound(n) {
 	scoreLeft = document.querySelector(`#scoreLeft-${n}`);
 	scoreRight = document.querySelector(`#scoreRight-${n}`);
 	instruction = document.querySelector(`#instruction-${n}`);
-	choices = document.querySelector(`#choices-${n}`);
 	// LOAD scoreboard
 	scoreLeft.textContent = playerScore;
 	scoreRight.textContent = enemyScore;
@@ -167,7 +159,7 @@ function playRound() {
 
 	function showChoices() {
 		// ENABLE button clicks
-		choices.addEventListener("click", choose);
+		eachChoice.forEach(choice => choice.addEventListener("click", choose));
 		console.log("Buttons activated.");
 
 		// REMOVE chant behaviors
@@ -189,10 +181,10 @@ function playRound() {
 		console.log(`You chose ${playerChoice}`);
 		// HIDE choices
 		choices.classList.add("hidden");
-		// Brighten "Shoot!" aka index 3 of #stepItems
-		stepItems[clickCount].classList.remove("opacity-50");
+		// // Brighten "Shoot!" aka index 3 of #stepItems
+		// stepItems[clickCount].classList.remove("opacity-50");
 		// DISABLE button clicks
-		choices.removeEventListener("click", choose);
+		eachChoice.forEach(choice => choice.removeEventListener("click", choose));
 		console.log("Buttons deactivated.");
 		getOutcome();
 	}
@@ -306,8 +298,24 @@ function playRound() {
 		if (playerScore === 5 || enemyScore === 5) {
 			endGame();
 		}
-		else nextRound(++roundNum);
+		else {
+			showNextBtn();
+		}
+		// nextRound(++roundNum);
 	}
+	
+	function showNextBtn() {
+		// REVEAL button
+		nextBtn.classList.remove("hidden");
+		// ENABLE nextBtn clicks
+		nextBtn.addEventListener("click", clickNext);
+		console.log("Button for nextRound activated.");
+	}
+}
+
+function clickNext() {
+	nextRound(++roundNum);
+	console.log("nextRound clicked.");
 }
 
 function endGame() {
