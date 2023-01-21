@@ -217,26 +217,26 @@ function playRound() {
       endRound('tie');
     } else if (playerChoice === 'rock') {
       if (enemyChoice === 'scissors') {
-        whyOutcome.innerHTML = '<span class="font-semibold">Rock</span> breaks <span class="font-semibold">Scissors</span>';
+        whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Rock</span> breaks <span class="font-semibold">Scissors</span>';
         endRound('win');
       } else {
-        whyOutcome.innerHTML = '<span class="font-semibold">Rock</span> covered by <span class="font-semibold">Paper</span>';
+        whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Rock</span> covered by <span class="font-semibold">Paper</span>';
         endRound('loss');
       }
     } else if (playerChoice === 'paper') {
       if (enemyChoice === 'rock') {
-        whyOutcome.innerHTML = '<span class="font-semibold">Paper</span> covers <span class="font-semibold">Rock</span>';
+        whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Paper</span> covers <span class="font-semibold">Rock</span>';
         endRound('win');
       } else {
-        whyOutcome.innerHTML = '<span class="font-semibold">Paper</span> cut by <span class="font-semibold">Scissors</span>';
+        whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Paper</span> cut by <span class="font-semibold">Scissors</span>';
         endRound('loss');
       }
     } else if (playerChoice === 'scissors') {
       if (enemyChoice === 'paper') {
-        whyOutcome.innerHTML = '<span class="font-semibold">Scissors</span> cut <span class="font-semibold">Paper</span>';
+        whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Scissors</span> cut <span class="font-semibold">Paper</span>';
         endRound('win');
       } else {
-        whyOutcome.innerHTML = '<span class="font-semibold">Scissors</span> broken by <span class="font-semibold">Rock</span>';
+        whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Scissors</span> broken by <span class="font-semibold">Rock</span>';
         endRound('loss');
       }
     } else {
