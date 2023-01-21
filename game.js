@@ -44,8 +44,10 @@ else instruction.innerHTML = "Click anywhere";
 
 // the parent element containing the choice buttons
 let choices = document.querySelector("#choices");
+// each button within choices
+let eachChoice = document.querySelectorAll('#choices button');
 // the button for proceeding to the next round
-let next = document.querySelector("#nextRound");
+let nextBtn = document.querySelector("#nextBtn");
 
 // the final result announcement text on game end.
 let final = document.querySelector("#final");
@@ -55,22 +57,13 @@ const blankRound = document.querySelector("#blankRound"); // set aside a blank c
 nextRound(++roundNum);
 
 function nextRound(n) {
+	if (n > 1) {
+		nextBtn.removeEventListener("click", clickNext);
+		nextBtn.classList.add('hidden');
+	}
 	newRound(n);
 	playRound();
 }
-
-// for (playerScore, enemyScore; playerScore < 5 || enemyScore < 5;) {
-// 	for (let roundNum = 1; roundNum++;) {
-// 		newRound(roundNum);
-// 		console.log("--- ...newRound() complete. ---");
-// 		playRound();
-// 		console.log("--- ...playRound() complete. ---");
-// 	}
-// }
-// 
-// endGame();
-// console.log("--- Game ended. ---");
-
 
 function newRound(n) {
 	console.log(`--- Making newRound(${n})... ---`)
@@ -89,7 +82,7 @@ function newRound(n) {
 		return roundNode;
 	}
 	// INSERT hidden new round
-	document.body.insertBefore(roundSection, final);
+	document.body.insertBefore(roundSection, choices);
 	// RENAME
 	suffixChildIds(roundSection, n);
 
@@ -103,7 +96,7 @@ function newRound(n) {
 	console.log("Added new round section to document.");
 	window.scrollTo(0, document.body.scrollHeight);	
 	
-	// RIG variables to new round IDs
+	// REFRESH variables with new round IDs
 	roundSign = document.querySelector(`#roundSign-${n}`);
 	steps = document.querySelector(`#stepItems-${n}`);
 	stepItems = document.querySelectorAll(`#stepItems-${n} span`);
@@ -115,12 +108,10 @@ function newRound(n) {
 	scoreLeft = document.querySelector(`#scoreLeft-${n}`);
 	scoreRight = document.querySelector(`#scoreRight-${n}`);
 	instruction = document.querySelector(`#instruction-${n}`);
-	choices = document.querySelector(`#choices-${n}`);
 	// LOAD scoreboard
 	scoreLeft.textContent = playerScore;
 	scoreRight.textContent = enemyScore;
 	console.log("Rigged new variables & Loaded scoreboard.")
-
 	// LOAD Round # banner
 	roundSign.textContent = `Round ${n}`;
 	console.log(`Updated round sign.`);
@@ -128,57 +119,50 @@ function newRound(n) {
 
 function playRound() {
 	console.log("--- Starting playRound()... ---");
-	
-	// Get elements in "Rock…Paper…Scissors…Shoot!"
+	// GET elements in "Rock…Paper…Scissors…Shoot!"
 	let stepItems = document.querySelectorAll(`#stepItems-${roundNum} span`);
 	clickCount = 0;
 	console.log(`Clicks set to ${clickCount}.`);
-	
-	// Clicks increment on release
+	// ADD click increment behavior
 	document.addEventListener(isTouch() ? 'touchend' : 'mouseup', addClick);
-	
 	function addClick() {
 		clickCount++;
 		console.log(`${clickCount} clicks`);
 	}
-	// Hands go down and RPS blinks on click down
+	// ADD hand down & chant-lighting behavior
 	document.addEventListener(isTouch() ? 'touchstart' : 'mousedown', down);
 	// Hands reset on click release
 	document.addEventListener(isTouch() ? 'touchend' : 'mouseup', up);
 	
 	function down() {
-		// Animate both hands downward
+		// ANIMATE both hands downward
 		playerHand.classList.add('rotate-12', 'translate-y-2.5');
 		enemyHand.classList.add('-rotate-12', 'translate-y-2.5');
-	
-		// Brighten "rock" then "paper" then "scissors"
+		// LIGHT chants one by one
 		stepItems[clickCount].classList.remove("opacity-50");
 	}
 	
 	function up() {
-		// Reset hands back upward
+		// ANIMATE hands back upward
 		playerHand.classList.remove('rotate-12', 'translate-y-2.5');
 		enemyHand.classList.remove('-rotate-12', 'translate-y-2.5');
-		
+		// SHOW choices once chanting is done
 		if (clickCount >= 3) {
 			showChoices();
 		}
 	}
 
 	function showChoices() {
-		// ENABLE button clicks
-		choices.addEventListener("click", choose);
-		console.log("Buttons activated.");
-
-		// REMOVE chant behaviors
+		// REMOVE chant-related behaviors
 		document.removeEventListener(isTouch() ? 'touchstart' : 'mousedown', down);
 		document.removeEventListener(isTouch() ? 'touchend' : 'mouseup', addClick);
 		document.removeEventListener(isTouch() ? 'touchend' : 'mouseup', up);
 		console.log("No more chanting.");
-		// HIDE "Tap/click anywhere"
 		instruction.classList.add("hidden");
-
-		// REVEAL choices
+		
+		// ENABLE & SHOW choice-selecting
+		eachChoice.forEach(choice => choice.addEventListener("click", choose));
+		console.log("Buttons activated.");
 		choices.classList.remove("hidden");
 		console.log("Choices revealed.");
 	}
@@ -187,13 +171,11 @@ function playRound() {
 		// SAVE choice button text as player choice when clicked
 		playerChoice = e.target.textContent;
 		console.log(`You chose ${playerChoice}`);
-		// HIDE choices
+		// REMOVE choice-selecting
 		choices.classList.add("hidden");
-		// Brighten "Shoot!" aka index 3 of #stepItems
-		stepItems[clickCount].classList.remove("opacity-50");
-		// DISABLE button clicks
-		choices.removeEventListener("click", choose);
+		eachChoice.forEach(choice => choice.removeEventListener("click", choose));
 		console.log("Buttons deactivated.");
+		// SUBMIT selection
 		getOutcome();
 	}
 
@@ -202,34 +184,34 @@ function playRound() {
 		enemyChoice = getComputerChoice().toLowerCase();
 		console.log(`Enemy chose ${enemyChoice}`);
 		
-		updateHands();
-		function updateHands() {
-			switch (playerChoice) {
-				case 'rock':
-				playerHand.src = "/assets/Player-Rock.png";
-				break;
-				case 'paper':
-				playerHand.src = "/assets/Player-Paper.png";
-				break;
-				case 'scissors':
-				playerHand.src = "/assets/Player-Scissors.png";
-				break;
-			}
-			
-			switch (enemyChoice) {
-				case 'rock':
-				enemyHand.src = "/assets/Opponent-Rock.png";
-				break;
-				case 'paper':
-				enemyHand.src = "/assets/Opponent-Paper.png";
-				break;
-				case 'scissors':
-				enemyHand.src = "/assets/Opponent-Scissors.png";
-				break;
-			}
+		// UPDATE hand images on table
+		switch (playerChoice) {
+			case 'rock':
+			playerHand.src = "/assets/Player-Rock.png";
+			break;
+			case 'paper':
+			playerHand.src = "/assets/Player-Paper.png";
+			break;
+			case 'scissors':
+			playerHand.src = "/assets/Player-Scissors.png";
+			break;
 		}
 		
-		// Compare choices and determine a winner.
+		switch (enemyChoice) {
+			case 'rock':
+			enemyHand.src = "/assets/Opponent-Rock.png";
+			break;
+			case 'paper':
+			enemyHand.src = "/assets/Opponent-Paper.png";
+			break;
+			case 'scissors':
+			enemyHand.src = "/assets/Opponent-Scissors.png";
+			break;
+		}
+		
+		// DECIDE winner
+		// SHOW outcome
+		// END round
 		if (playerChoice === enemyChoice) {
 			whyOutcome.textContent = "Love is love<3";
 			endRound('tie');
@@ -275,11 +257,7 @@ function playRound() {
 		// UPDATE table
 		glassImg.src = `/assets/table-${outcome}.svg`;
 		winLose.textContent = `${outcome}`;
-		// DIM round sign
-		roundSign.classList.add("opacity-40");
-		roundSign.classList.remove("font-bold");
-		roundSign.classList.remove("text-amber-300");
-		// REVEAL result text
+		// SHOW outcome text
 		whyOutcome.classList.remove("hidden");
 		winLose.classList.remove("hidden");
 		// HIDE chant text
@@ -306,8 +284,29 @@ function playRound() {
 		if (playerScore === 5 || enemyScore === 5) {
 			endGame();
 		}
-		else nextRound(++roundNum);
+		else {
+			showNextBtn();
+		}
+		// nextRound(++roundNum);
 	}
+	
+	function showNextBtn() {
+		// REVEAL button
+		nextBtn.classList.remove("hidden");
+		// ENABLE nextBtn clicks
+		nextBtn.addEventListener("click", clickNext);
+		console.log("Button for nextRound activated.");
+	}
+}
+
+function clickNext() {
+	// DIM round sign
+	roundSign.classList.add("opacity-40");
+	roundSign.classList.remove("font-bold");
+	roundSign.classList.remove("text-amber-300");
+	
+	nextRound(++roundNum);
+	console.log("nextRound clicked.");
 }
 
 function endGame() {

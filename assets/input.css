@@ -4,6 +4,6 @@
 
 @layer components {
 	.btn {
-		@apply bg-yellow-400 bg-gradient-to-b from-yellow-300 to-amber-700 text-black py-1 px-4 rounded-full flex-grow-0 w-min
+		@apply bg-yellow-400 bg-gradient-to-b from-yellow-300 to-amber-700 text-black py-1 px-3 rounded-full flex-grow-0 font-bold shadow;
 	}
 }
