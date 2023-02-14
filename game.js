@@ -217,7 +217,7 @@ function playRound() {
       endRound('tie');
     } else if (playerChoice === 'rock') {
       if (enemyChoice === 'scissors') {
-        whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Rock</span> breaks <span class="font-semibold">Scissors</span>';
+        whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Rock</span> broke <span class="font-semibold">Scissors</span>';
         endRound('win');
       } else {
         whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Rock</span> covered by <span class="font-semibold">Paper</span>';
@@ -225,7 +225,7 @@ function playRound() {
       }
     } else if (playerChoice === 'paper') {
       if (enemyChoice === 'rock') {
-        whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Paper</span> covers <span class="font-semibold">Rock</span>';
+        whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Paper</span> covered <span class="font-semibold">Rock</span>';
         endRound('win');
       } else {
         whyOutcome.innerHTML = '<span class="font-semibold text-amber-300">Paper</span> cut by <span class="font-semibold">Scissors</span>';
