@@ -8,5 +8,5 @@ Project completed for The Odin Project's Foundations course: https://www.theodin
 - Emulates experience of chanting "Rock…Paper…Scissors" before playing choices
 
 ## Todos
-- Allow users to change number of points for winner
-- Allow selection of whether to decide winner at a predetermined # of rounds vs. points.
+- Allow users to choose deciding winner at a predetermined # of rounds vs. # of points points.
+- Make indication of which hand won/lost clearer?
